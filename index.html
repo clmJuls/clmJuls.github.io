@@ -1,54 +1,520 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>SurpriseJuls</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SurpriseJuls</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<script type="text/javascript">
-flag=1
-function f1()
-{
-    var Name = prompt("what should I call you?");
-    
-    if(Name == "" || Name == null) {
-    alert("please enter your name.");
-    } else {
-    alert("Hi " + Name + ", Demenyo ka talaga."); 
-    }
-}
-function f()
-{
-    if(flag==1)
-        {
-            Bn.style.top=400
-            Bn.style.left=300
-            flag=2
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            overflow-x: hidden;
         }
-    else if(flag==2)
-        {
-            Bn.style.top=400
-            Bn.style.left=50
-            flag=3
-        }
-    else if(flag==3)
-        {
-            Bn.style.top=370
-            Bn.style.left=166
-            flag=1
-        }
-}
-</script>
 
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .gif-container {
+            margin: 2rem 0;
+            animation: bounce 2s infinite;
+            position: relative;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .gif-container img {
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .gif-hidden {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .gif-show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .modal-gif {
+            width: 150px;
+            height: 150px;
+            margin: 1rem auto;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .celebration-gif {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1001;
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            animation: celebrationPop 2s ease-out;
+        }
+
+        @keyframes celebrationPop {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5) rotate(-180deg);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2) rotate(0deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+            }
+        }
+
+        .floating-gifs {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .floating-gif {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .question {
+            font-size: 2rem;
+            margin: 2rem 0;
+            font-weight: bold;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-yes {
+            background: linear-gradient(45deg, #56ab2f, #a8e6cf);
+            color: white;
+        }
+
+        .btn-yes:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(86, 171, 47, 0.4);
+        }
+
+        .btn-no {
+            background: linear-gradient(45deg, #ff6b6b, #ffa8a8);
+            color: white;
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .btn-no:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 15% auto;
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px) scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal input {
+            width: 100%;
+            padding: 15px;
+            margin: 1rem 0;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+
+        .modal input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn-ok {
+            background: #56ab2f;
+            color: white;
+        }
+
+        .modal-btn-cancel {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .question {
+                font-size: 1.5rem;
+            }
+
+            .buttons-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 200px;
+            }
+        }
+    </style>
 </head>
 <body>
-<h1> Red flag ba si Cyrus</h1>
-<img src="https://c.tenor.com/sZPWbZj_QI8AAAAi/kakaotalk-emoticon.gif" height="200" />
-<h1 style="#">Tama ba?</h1>
-<div id="By" style="position:absolute; left:64px; top:370px; width:210px;
-height:210px;">
-<input type="button" value=" YES " onClick="f1()" />
-</div>
-<div ID="Bn" style="position:absolute; left:166px; top:370px; width:210px; height:210px;">
-<input type="button" value=" NO " onMouseOver="f()" />
-</div>
+    <div class="container">
+        <h1>Red flag ba si Frences</h1>
+        <div class="gif-container">
+            <img id="mainGif" src="https://c.tenor.com/sZPWbZj_QI8AAAAi/kakaotalk-emoticon.gif" height="200" alt="Animated emoji" />
+        </div>
+        <div class="question">Tama ba?</div>
+        <div class="buttons-container">
+            <button class="btn btn-yes" onclick="showModal()">YES</button>
+            <button class="btn btn-no" id="noBtn" onmouseover="moveButton()">NO</button>
+        </div>
+    </div>
 
+    <div class="floating-gifs" id="floatingGifs"></div>
+
+    <div id="nameModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>What should I call you?</h2>
+            <img class="modal-gif" src="https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif" alt="Thinking emoji" />
+            <input type="text" id="nameInput" placeholder="Enter your name..." />
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-ok" onclick="submitName()">OK</button>
+                <button class="modal-btn modal-btn-cancel" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeResultModal()">&times;</span>
+            <h2 id="resultMessage"></h2>
+            <img id="resultGif" class="modal-gif" src="" alt="Result emoji" />
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-ok" onclick="closeResultModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let flag = 1;
+        const noBtn = document.getElementById('noBtn');
+        const mainGif = document.getElementById('mainGif');
+
+        const gifs = {
+            default: 'https://c.tenor.com/sZPWbZj_QI8AAAAi/kakaotalk-emoticon.gif',
+            thinking: 'https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif',
+            happy: 'https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif',
+            celebration: 'https://media.giphy.com/media/26u4cqiYI30juCOGY/giphy.gif',
+            warning: 'https://media.giphy.com/media/3o7aCRloybJlXpNjSU/giphy.gif',
+            confused: 'https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif',
+            wink: 'https://media.giphy.com/media/3o7absbD7PbTFQa0c8/giphy.gif',
+            dancing: 'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif',
+            hearts: 'https://media.giphy.com/media/3o6Zt6KHxJTbXCnSvu/giphy.gif'
+        };
+
+        function changeMainGif(gifType) {
+            mainGif.classList.add('gif-hidden');
+            setTimeout(() => {
+                mainGif.src = gifs[gifType];
+                mainGif.classList.remove('gif-hidden');
+                mainGif.classList.add('gif-show');
+            }, 250);
+        }
+
+        function showModal() {
+            changeMainGif('thinking');
+            createFloatingGifs();
+            document.getElementById('nameModal').style.display = 'block';
+            document.getElementById('nameInput').focus();
+        }
+
+        function closeModal() {
+            changeMainGif('default');
+            clearFloatingGifs();
+            document.getElementById('nameModal').style.display = 'none';
+            document.getElementById('nameInput').value = '';
+        }
+
+        function closeResultModal() {
+            changeMainGif('default');
+            document.getElementById('resultModal').style.display = 'none';
+            removeCelebrationGif();
+        }
+
+        function submitName() {
+            const name = document.getElementById('nameInput').value.trim();
+            const resultGif = document.getElementById('resultGif');
+
+            if (name === '') {
+                document.getElementById('resultMessage').textContent = 'Please enter your name.';
+                resultGif.src = gifs.warning;
+                changeMainGif('confused');
+            } else {
+                document.getElementById('resultMessage').textContent = `Hi ${name}, Demenyo ka talaga.`;
+                resultGif.src = gifs.hearts;
+                changeMainGif('happy');
+                showCelebrationGif();
+            }
+
+            closeModal();
+            document.getElementById('resultModal').style.display = 'block';
+        }
+
+        function moveButton() {
+            changeMainGif('wink');
+            createMiniFloatingGifs();
+
+            if (flag === 1) {
+                noBtn.style.transform = 'translateX(100px) translateY(50px)';
+                flag = 2;
+            } else if (flag === 2) {
+                noBtn.style.transform = 'translateX(-100px) translateY(50px)';
+                flag = 3;
+            } else if (flag === 3) {
+                noBtn.style.transform = 'translateX(0) translateY(-30px)';
+                flag = 1;
+            }
+
+            setTimeout(() => {
+                changeMainGif('default');
+            }, 1500);
+        }
+
+        function createFloatingGifs() {
+            const container = document.getElementById('floatingGifs');
+            const floatingGifSrcs = [gifs.hearts, gifs.dancing, gifs.celebration];
+
+            for (let i = 0; i < 5; i++) {
+                const gif = document.createElement('img');
+                gif.className = 'floating-gif';
+                gif.src = floatingGifSrcs[Math.floor(Math.random() * floatingGifSrcs.length)];
+                gif.style.left = Math.random() * window.innerWidth + 'px';
+                gif.style.top = Math.random() * window.innerHeight + 'px';
+                gif.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(gif);
+            }
+        }
+
+        function createMiniFloatingGifs() {
+            const container = document.getElementById('floatingGifs');
+            const gif = document.createElement('img');
+            gif.className = 'floating-gif';
+            gif.src = gifs.confused;
+            gif.style.left = noBtn.offsetLeft + 'px';
+            gif.style.top = noBtn.offsetTop + 'px';
+            gif.style.width = '50px';
+            gif.style.height = '50px';
+            container.appendChild(gif);
+
+            setTimeout(() => {
+                if (gif.parentNode) {
+                    gif.parentNode.removeChild(gif);
+                }
+            }, 2000);
+        }
+
+        function clearFloatingGifs() {
+            const container = document.getElementById('floatingGifs');
+            container.innerHTML = '';
+        }
+
+        function showCelebrationGif() {
+            const celebrationGif = document.createElement('img');
+            celebrationGif.className = 'celebration-gif';
+            celebrationGif.src = gifs.celebration;
+            celebrationGif.id = 'celebrationGif';
+            document.body.appendChild(celebrationGif);
+
+            setTimeout(() => {
+                removeCelebrationGif();
+            }, 3000);
+        }
+
+        function removeCelebrationGif() {
+            const celebrationGif = document.getElementById('celebrationGif');
+            if (celebrationGif) {
+                celebrationGif.remove();
+            }
+        }
+
+        window.onclick = function(event) {
+            const nameModal = document.getElementById('nameModal');
+            const resultModal = document.getElementById('resultModal');
+
+            if (event.target === nameModal) {
+                closeModal();
+            }
+            if (event.target === resultModal) {
+                closeResultModal();
+            }
+        }
+
+        document.getElementById('nameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                submitName();
+            }
+        });
+    </script>
 </body>
 </html>
